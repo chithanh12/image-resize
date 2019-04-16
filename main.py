@@ -68,6 +68,20 @@ for file in os.listdir("input"):
   
 
 # Merge image with template
+templates = ["t001.png", "t002.png"]
+for file in templates:
+  outfile = os.path.splitext(file)[0] + "_u.png"
+  newFolder = os.path.join(os.path.dirname(os.path.abspath(__file__)), outfile)
+      
+  try:
+    img = Image.open(file)
+    img.thumbnail((88,88))
+    img.save(newFolder, "PNG")
+  except IOError, ioe:
+    print "cannot crop",file
+    print str(ioe)
+
+
 _mergeFolder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "merged")
 if not os.path.exists(_mergeFolder):
   os.makedirs(_mergeFolder)
@@ -79,8 +93,8 @@ for file in os.listdir('./64x64'):
     
     try:
       foreground = Image.open("input/" +file)
-      background = Image.open('t001.png')  
-      background.paste(foreground, (0, 0), foreground)
+      background = Image.open('t001_u.png')  
+      background.paste(foreground, (6, 6), foreground)
       #background.show()
       background.save(newFolder, "PNG")
     except IOError, ioe:
