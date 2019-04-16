@@ -29,40 +29,61 @@ for file in os.listdir("input"):
       print "cannot resize",file
       print str(ioe)
 
-#scale up image
-if not os.path.exists(_128pixel):
-  os.makedirs(_128pixel)
+# #scale up image
+# if not os.path.exists(_128pixel):
+#   os.makedirs(_128pixel)
 
-for file in os.listdir('input'):
-  if file.endswith(".png") :       
+# for file in os.listdir('input'):
+#   if file.endswith(".png") :       
 
-    outfile = os.path.splitext(file)[0] + ".png"
-    newFolder = os.path.join(_128pixel, outfile)                    
-    try:
-      img = Image.open("input/" + file)
-      img = img.resize((128,128), Image.ANTIALIAS)
-      img.save(newFolder, "PNG")
-    except IOError, ioe:
-      print "cannot resize",file
-      print str(ioe)
+#     outfile = os.path.splitext(file)[0] + ".png"
+#     newFolder = os.path.join(_128pixel, outfile)                    
+#     try:
+#       img = Image.open("input/" + file)
+#       img = img.resize((128,128), Image.ANTIALIAS)
+#       img.save(newFolder, "PNG")
+#     except IOError, ioe:
+#       print "cannot resize",file
+#       print str(ioe)
 
-# #crop image to (48x48)
-if not os.path.exists(_crop):
-  os.makedirs(_crop)
+# # #crop image to (48x48)
+# if not os.path.exists(_crop):
+#   os.makedirs(_crop)
 
-for file in os.listdir('./input'):
+# for file in os.listdir('./input'):
+#   if file.endswith(".png"):       
+#     outfile = os.path.splitext(file)[0] + ".png"
+#     newFolder = os.path.join(_crop, outfile)                    
+#     left = 6
+#     top = 6
+#     right = 66
+#     bottom = 66
+#     try:
+#       img = Image.open("input/" +file)
+#       img = img.crop((left, top, right, bottom))
+#       img.save(newFolder, "PNG")
+#     except IOError, ioe:
+#       print "cannot crop",file
+#       print str(ioe)
+  
+
+# Merge image with template
+_mergeFolder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "merged")
+if not os.path.exists(_mergeFolder):
+  os.makedirs(_mergeFolder)
+
+for file in os.listdir('./64x64'):
   if file.endswith(".png"):       
     outfile = os.path.splitext(file)[0] + ".png"
-    newFolder = os.path.join(_crop, outfile)                    
-    left = 6
-    top = 6
-    right = 66
-    bottom = 66
+    newFolder = os.path.join(_mergeFolder, outfile)                    
+    
     try:
-      img = Image.open("input/" +file)
-      img = img.crop((left, top, right, bottom))
-      img.save(newFolder, "PNG")
+      foreground = Image.open("input/" +file)
+      background = Image.open('t001.png')  
+      background.paste(foreground, (0, 0), foreground)
+      #background.show()
+      background.save(newFolder, "PNG")
     except IOError, ioe:
       print "cannot crop",file
       print str(ioe)
-  
+
